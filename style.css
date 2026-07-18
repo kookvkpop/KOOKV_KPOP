@@ -235,3 +235,36 @@ font-size:30px;
 }
 
 }
+.product img{
+aspect-ratio:1/1;
+object-fit:cover;
+border:1px solid #444;
+}
+
+#result{
+box-shadow:0 0 20px rgba(255,0,0,.2);
+}
+
+#statusBadge{
+display:inline-block;
+padding:8px 18px;
+border-radius:999px;
+font-weight:700;
+}
+
+.step{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.step span{
+width:34px;
+height:34px;
+border-radius:50%;
+background:#444;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+}
