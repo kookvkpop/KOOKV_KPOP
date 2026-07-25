@@ -29,11 +29,9 @@ const CONFIG = {
 
         LINE: "",
 
-        FACEBOOK: "",
 
         INSTAGRAM: "",
 
-        TIKTOK: ""
 
     }
 
