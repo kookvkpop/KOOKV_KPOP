@@ -31,74 +31,50 @@ Order Tracking System
 
 <div class="language">
 
-<button id="thBtn">
-🇹🇭 ไทย
-</button>
+<button id="thBtn">🇹🇭 ไทย</button>
 
-<button id="enBtn">
-🇺🇸 English
-</button>
+<button id="enBtn">🇺🇸 English</button>
+
+</div>
 
 </div>
 
 </header>
 
-<main>
+<main class="container">
 
 <section class="search-card">
 
-<h2>
-
-🔍 เช็กสถานะสินค้า
-
-</h2>
+<h2>🔍 เช็กสถานะสินค้า</h2>
 
 <p>
-
-ค้นหาด้วยเลขออเดอร์ / Tracking / ชื่อลูกค้า
-
+ค้นหาด้วยเลขออเดอร์ (KV001) หรือเลข Tracking
 </p>
 
 <div class="search-box">
 
 <input
-
 type="text"
-
 id="searchInput"
-
-placeholder="เช่น KKV-260001"
-
+placeholder="เช่น KV001 หรือ SF123456789KR"
 >
 
 <button id="searchBtn">
-
 ค้นหา
-
 </button>
 
 </div>
 
 </section>
 
-<section
-
-id="result"
-
-class="hidden"
-
->
+<section id="result" class="hidden">
 
 <div class="product">
 
 <img
-
 id="productImage"
-
 src=""
-
 alt="สินค้า"
-
 >
 
 </div>
@@ -106,96 +82,62 @@ alt="สินค้า"
 <div class="detail">
 
 <h2 id="productName">
-
 ชื่อสินค้า
-
 </h2>
 
-<table>
+<div class="info-card">
 
-<tr>
+<div class="info-row">
+<span>🟣 Order No.</span>
+<strong id="orderNo">-</strong>
+</div>
 
-<td>Order</td>
+<div class="info-row">
+<span>🟢 สถานะ</span>
+<span id="statusBadge">-</span>
+</div>
 
-<td id="orderNo"></td>
+<div class="info-row">
+<span>👤 ลูกค้า</span>
+<span id="customer">-</span>
+</div>
 
-</tr>
+<div class="info-row">
+<span>📦 LOT</span>
+<span id="lot">-</span>
+</div>
 
-<tr>
+<div class="info-row">
+<span>🔢 จำนวน</span>
+<span id="qty">-</span>
+</div>
 
-<td>Customer</td>
+<div class="info-row">
+<span>🚚 Tracking</span>
 
-<td id="customer"></td>
+<div>
 
-</tr>
-
-<tr>
-
-<td>Tracking</td>
-
-<td>
-
-<span id="tracking"></span>
+<span id="tracking">-</span>
 
 <button id="copyBtn">
-
-Copy
-
+📋 Copy
 </button>
 
-</td>
+</div>
 
-</tr>
+</div>
 
-<tr>
+<div class="info-row">
+<span>📝 หมายเหตุ</span>
+<span id="remark">-</span>
+</div>
 
-<td>LOT</td>
+<div class="info-row">
+<span>📅 อัปเดตล่าสุด</span>
+<span id="update">-</span>
+</div>
 
-<td id="lot"></td>
-
-</tr>
-
-<tr>
-
-<td>จำนวน</td>
-
-<td id="qty"></td>
-
-</tr>
-
-<tr>
-
-<td>สถานะ</td>
-
-<td>
-
-<span id="statusBadge">
-
--
-
-</span>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>อัปเดตล่าสุด</td>
-
-<td id="update"></td>
-
-</tr>
-
-<tr>
-
-<td>หมายเหตุ</td>
-
-<td id="remark"></td>
-
-</tr>
-
-</table>
+</div>
 
 </div>
 
@@ -206,37 +148,23 @@ Copy
 <footer>
 
 <a
-
 href="https://lin.ee/VAJ5e23"
-
 target="_blank"
-
 class="line"
-
 >
-
 LINE
-
 </a>
 
 <a
-
 href="https://www.instagram.com/kookv_kpop"
-
 target="_blank"
-
 class="ig"
-
 >
-
 Instagram
-
 </a>
 
 <p>
-
 © 2026 KOOKV_KPOP
-
 </p>
 
 </footer>
@@ -244,5 +172,4 @@ Instagram
 <script type="module" src="script.js"></script>
 
 </body>
-
 </html>
