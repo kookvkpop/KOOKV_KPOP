@@ -1,236 +1,154 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbymgbu7Y8lK5I9rtMpkqsMofY_1STPvrHSlrRnHTXhxWrq8JyrQvpq1P7-FECMrCrFW/exec";
+// =========================
+// KOOKV_KPOP Main Script
+// =========================
 
-// ===== Elements =====
-
-const searchBtn = document.getElementById("searchBtn");
-const searchInput = document.getElementById("searchInput");
-
-const result = document.getElementById("result");
-
-const productImage = document.getElementById("productImage");
-const productName = document.getElementById("productName");
-
-const orderNo = document.getElementById("orderNo");
-const customer = document.getElementById("customer");
-const tracking = document.getElementById("tracking");
-const lot = document.getElementById("lot");
-const qty = document.getElementById("qty");
-const statusBadge = document.getElementById("statusBadge");
-const update = document.getElementById("update");
-const remark = document.getElementById("remark");
-
-const copyBtn = document.getElementById("copyBtn");
-
-// ==========================
-
-searchBtn.addEventListener("click", searchOrder);
-
-searchInput.addEventListener("keydown", (e) => {
-
-    if (e.key === "Enter") {
-
-        searchOrder();
-
-    }
-
+document.addEventListener("DOMContentLoaded", () => {
+    loadAnnouncements();
+    loadProducts();
 });
 
-copyBtn.addEventListener("click", copyTracking);
+// โหลดประกาศ
+async function loadAnnouncements() {
 
-// ==========================
+    const list = document.getElementById("announcementList");
 
-async function searchOrder() {
+    if (!list) return;
 
-    const keyword = searchInput.value.trim();
+    const data = await getSheet(CONFIG.SHEETS.ANNOUNCEMENTS);
 
-    if (!keyword) {
-
-        alert("กรุณากรอกเลขออเดอร์ หรือเลข Tracking");
-
-        searchInput.focus();
-
+    if (!data.length) {
+        list.innerHTML = "<div class='announcement-item'>ยังไม่มีประกาศ</div>";
         return;
-
     }
 
-    result.classList.add("hidden");
+    list.innerHTML = "";
 
-    searchBtn.disabled = true;
-    searchBtn.textContent = "กำลังค้นหา...";
+    data.forEach(item => {
 
-    try {
+        const div = document.createElement("div");
 
-        const response = await fetch(API_URL);
+        div.className = "announcement-item";
 
-        const orders = await response.json();
+        div.innerHTML = `
+            <h3>${item.Title || ""}</h3>
+            <p>${item.Detail || ""}</p>
+        `;
 
-        const order = orders.find(item =>
+        list.appendChild(div);
 
-            item.OrderNo?.toLowerCase() === keyword.toLowerCase()
+    });
 
-            ||
+}
 
-            item.Tracking?.toLowerCase() === keyword.toLowerCase()
+// โหลดสินค้า
+async function loadProducts(){
 
-            ||
+    const container = document.getElementById("homeProducts");
+    const newContainer = document.getElementById("newProducts");
 
-            item.Customer?.toLowerCase().includes(keyword.toLowerCase())
+    if(!container) return;
 
-        );
+    const products = await getSheet(CONFIG.SHEETS.PRODUCTS);
 
-        if (!order) {
+    if(!products.length){
 
-            alert("ไม่พบข้อมูล");
+        container.innerHTML =
+        "<div class='loading'>ยังไม่มีสินค้า</div>";
 
-            return;
+        if(newContainer){
+            newContainer.innerHTML =
+            "<div class='loading'>ยังไม่มีสินค้า</div>";
+        }
+
+        return;
+    }
+
+    container.innerHTML="";
+
+    if(newContainer){
+        newContainer.innerHTML="";
+    }
+
+    products.forEach((item,index)=>{
+
+        const card=createProductCard(item);
+
+        container.appendChild(card);
+
+        if(newContainer && index<4){
+
+            newContainer.appendChild(
+                createProductCard(item)
+            );
 
         }
 
-        showOrder(order);
+    });
 
-    } catch (error) {
+}
+// =========================
+// สร้างการ์ดสินค้า
+// =========================
 
-        console.error(error);
+function createProductCard(item){
 
-        alert("ไม่สามารถเชื่อมต่อระบบได้");
+    const card = document.createElement("div");
 
-    } finally {
+    card.className = "product-card";
 
-        searchBtn.disabled = false;
-        searchBtn.textContent = "ค้นหา";
+    const status = (item.Status || "").toLowerCase();
 
+    let statusClass = "status-open";
+
+    if(status.includes("ปิด")){
+        statusClass = "status-close";
     }
+
+    if(status.includes("รอ")){
+        statusClass = "status-coming";
+    }
+
+    card.innerHTML = `
+
+        <img src="${item.Image || 'https://placehold.co/600x600?text=KOOKV_KPOP'}"
+             alt="${item.Product || ''}">
+
+        <div class="product-info">
+
+            <div class="product-name">
+                ${item.Product || "-"}
+            </div>
+
+            <div class="product-price">
+                ฿${Number(item.Price || 0).toLocaleString("th-TH")}
+            </div>
+
+            <span class="product-status ${statusClass}">
+                ${item.Status || "-"}
+            </span>
+
+        </div>
+
+    `;
+
+    return card;
 
 }
 
-// ==========================
+// =========================
+// Banner (สำหรับใช้งานในอนาคต)
+// =========================
 
-function showOrder(order) {
+async function loadBanner(){
 
-    result.classList.remove("hidden");
+    const banners = await getSheet(CONFIG.SHEETS.BANNER);
 
-    productImage.src = order.Image || "https://via.placeholder.com/500x500?text=NO+IMAGE";
-
-    productName.textContent = order.Product || "-";
-
-    orderNo.textContent = order.OrderNo || "-";
-
-    customer.textContent = order.Customer || "-";
-
-    tracking.textContent = order.Tracking || "ยังไม่มีเลข Tracking";
-
-    qty.textContent = order.Qty || "-";
-
-    remark.textContent = order.Remark || "-";
-
-    statusBadge.textContent = order.Status || "-";
-
-    // LOT
-
-    if (order.LOT) {
-
-        lot.textContent = order.LOT.replace("LOT", "LOT ");
-
-    } else {
-
-        lot.textContent = "-";
-
-    }
-
-    // วันที่
-
-    if (order.Update) {
-
-        const d = new Date(order.Update);
-
-        update.textContent = d.toLocaleDateString("th-TH", {
-
-            day: "numeric",
-
-            month: "short",
-
-            year: "numeric"
-
-        });
-
-    } else {
-
-        update.textContent = "-";
-
-    }
-
-    // สีสถานะ
-
-    setStatusColor(order.Status);
-
-    // ปุ่ม Copy
-
-    if (order.Tracking) {
-
-        copyBtn.style.display = "inline-block";
-
-    } else {
-
-        copyBtn.style.display = "none";
-
-    }
+    console.log("Banner :", banners);
 
 }
 
-// ==========================
+// =========================
+// Console
+// =========================
 
-function copyTracking() {
-
-    if (!tracking.textContent || tracking.textContent === "ยังไม่มีเลข Tracking") {
-
-        return;
-
-    }
-
-    navigator.clipboard.writeText(tracking.textContent);
-
-    alert("คัดลอกเลข Tracking แล้ว");
-
-}
-
-// ==========================
-
-function setStatusColor(status) {
-
-    const colors = {
-
-        "เปิดรับพรีออเดอร์": "#F4B400",
-
-        "ดำเนินการสั่งซื้อแล้ว": "#FB8C00",
-
-        "รอเว็บจัดส่ง": "#2196F3",
-
-        "ดำเนินการส่งกลับไทย": "#7B1FA2",
-
-        "ถึงไทยแล้ว": "#1565C0",
-
-        "กำลังแพ็กสินค้า": "#8D6E63",
-
-        "ส่งแล้ว": "#2E7D32",
-
-        "จัดส่งสำเร็จ": "#00897B"
-
-    };
-
-    statusBadge.style.background = colors[status] || "#666";
-
-}
-
-// ==========================
-
-document.getElementById("thBtn").addEventListener("click", () => {
-
-    document.querySelector(".subtitle").textContent = "ระบบเช็กสถานะสินค้า";
-
-});
-
-document.getElementById("enBtn").addEventListener("click", () => {
-
-    document.querySelector(".subtitle").textContent = "Order Tracking System";
-
-});
+console.log("KOOKV_KPOP Website Loaded");
