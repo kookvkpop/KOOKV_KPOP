@@ -20,13 +20,48 @@ async function init() {
 
 async function loadBanner() {
 
+    const hero = document.getElementById("heroBanner");
+    const title = document.getElementById("heroTitle");
+    const description = document.getElementById("heroDescription");
+    const button = document.getElementById("heroButton");
+
+    if (!hero) return;
+
     try {
 
-        const banners = await getSheet(CONFIG.SHEETS.BANNER);
+        const banners = await getBanner();
 
-        console.log("Banner :", banners);
+        if (!banners.length) return;
 
-        // จะเพิ่ม Banner Slider ในเวอร์ชันถัดไป
+        const banner = banners[0];
+
+        if (banner.Image) {
+
+            hero.style.backgroundImage =
+                `linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.65)),url('${banner.Image}')`;
+
+            hero.style.backgroundSize = "cover";
+            hero.style.backgroundPosition = "center";
+
+        }
+
+        title.textContent =
+            banner.Title || CONFIG.SHOP_NAME;
+
+        description.textContent =
+            banner.Description || "";
+
+        if (banner.Link) {
+
+            button.href = banner.Link;
+
+        }
+
+        if (banner.Button) {
+
+            button.textContent = banner.Button;
+
+        }
 
     } catch (error) {
 
@@ -72,7 +107,7 @@ async function loadAnnouncements() {
 
                     <h3>${item.Title || ""}</h3>
 
-                    <p>${item.Detail || ""}</p>
+                    <p>${item.Description || item.Detail || ""}</p>
 
                 </div>
 
