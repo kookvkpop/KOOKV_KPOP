@@ -168,7 +168,9 @@ async function loadProducts() {
 
         }
 
-        products.forEach((product, index) => {
+        products
+.filter(product => product.ProductID)
+.forEach((product, index) => {
 
             home.appendChild(createProductCard(product));
 
@@ -217,18 +219,43 @@ function createProductCard(item) {
 
     }
 
-    const image =
-        item.Image && item.Image !== ""
-            ? item.Image
-            : "https://placehold.co/600x600?text=KOOKV_KPOP";
+    let image = "";
+
+if (item.Image) {
+
+    image = String(item.Image).trim();
+
+    image = image.replace("/view?usp=sharing", "");
+
+    if (image.includes("/file/d/")) {
+
+        const id = image.split("/d/")[1].split("/")[0];
+
+        image = `https://drive.google.com/thumbnail?id=${id}&sz=w1200`;
+
+    }
+
+} else {
+
+    image = "https://placehold.co/600x600?text=KOOKV_KPOP";
+
+}
 
     card.innerHTML = `
 
         <img
-            src="${image}"
-            alt="${item.Product || ""}"
-            loading="lazy"
-            onerror="this.src='https://placehold.co/600x600?text=No+Image'">
+    src="${image}"
+    alt="${item.Product || ""}"
+    loading="lazy"
+    referrerpolicy="no-referrer"
+    onerror="
+        const id=(this.src.match(/id=([^&]+)/)||[])[1];
+        if(id){
+            this.src='https://drive.google.com/thumbnail?id='+id+'&sz=w1200';
+        }else{
+            this.src='https://placehold.co/600x600?text=No+Image';
+        }
+    ">
 
         <div class="product-info">
 
