@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KOOKV_KPOP | Order Tracking</title>
+<title>KOOKV_KPOP | Home</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -12,151 +12,103 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;700&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
 
-<header>
+<header class="header">
 
 <div class="logo">
-
 <img src="https://drive.google.com/thumbnail?id=1vqRCoAh1iXxq_5GVUD94ySXUJmUkHvHk&sz=w500" alt="KOOKV_KPOP">
 
 <h1>KOOKV_KPOP</h1>
 
-<p class="subtitle">Order Tracking System</p>
-
-<div class="language">
-<button id="thBtn">🇹🇭 ไทย</button>
-<button id="enBtn">🇺🇸 English</button>
+<p class="subtitle">
+Official Merchandise & Pre-Order
+</p>
 </div>
 
-</div>
+<nav class="navbar">
+<a href="index.html">🏠 Home</a>
+<a href="products.html">🛍 Products</a>
+<a href="track.html">📦 Track Order</a>
+<a href="#">📢 News</a>
+<a href="#">💬 Contact</a>
+</nav>
 
 </header>
 
-<main class="container">
+<section class="hero">
 
-<section class="search-card">
+<h2>Welcome to KOOKV_KPOP</h2>
 
-<h2>🔍 เช็กสถานะสินค้า</h2>
+<p>
+ร้านพรีออเดอร์สินค้า K-POP และ Official Merchandise
+</p>
 
-<p>ค้นหาด้วยเลขออเดอร์ (เช่น KV001) หรือเลข Tracking</p>
+<a href="products.html" class="shop-btn">
+🛒 ดูสินค้าทั้งหมด
+</a>
 
-<div class="search-box">
+</section>
 
-<input
-type="text"
-id="searchInput"
-placeholder="เช่น KV001 หรือ SF123456789KR"
->
+<section class="notice">
 
-<button id="searchBtn">
-ค้นหา
-</button>
+<h2>📢 ประกาศจากร้าน</h2>
+
+<div class="notice-box">
+
+<p>
+🟢 เปิดรับพรีออเดอร์สินค้า Official Merchandise
+</p>
+
+<p>
+สามารถติดตามสถานะสินค้าและออเดอร์ผ่านเว็บไซต์ได้ตลอด
+</p>
 
 </div>
 
 </section>
 
-<section id="result" class="hidden">
+<section class="why">
 
-<div class="product">
+<h2>💜 ทำไมต้องสั่งกับ KOOKV_KPOP</h2>
 
-<img
-id="productImage"
-src=""
-alt="สินค้า"
->
+<div class="why-grid">
 
+<div class="why-card">
+🎁
+<h3>Official Merchandise</h3>
+<p>คัดเลือกสินค้าจากร้านทางการ</p>
 </div>
 
-<div class="detail">
-
-<h2 id="productName">ชื่อสินค้า</h2>
-
-<div class="info-card">
-
-<div class="info-row">
-<span>🟣 Order No.</span>
-<strong id="orderNo">-</strong>
+<div class="why-card">
+📦
+<h3>เช็กสถานะออเดอร์</h3>
+<p>ติดตามความคืบหน้าได้ทุกเวลา</p>
 </div>
 
-<div class="info-row">
-<span>🟢 สถานะ</span>
-<span id="statusBadge">-</span>
+<div class="why-card">
+🔔
+<h3>อัปเดตข่าวสาร</h3>
+<p>แจ้งกำหนดการและสถานะสินค้า</p>
 </div>
 
-<div class="info-row">
-<span>👤 ลูกค้า</span>
-<span id="customer">-</span>
-</div>
-
-<div class="info-row">
-<span>📦 LOT</span>
-<span id="lot">-</span>
-</div>
-
-<div class="info-row">
-<span>🔢 จำนวน</span>
-<span id="qty">-</span>
-</div>
-
-<div class="info-row">
-<span>🚚 Tracking</span>
-
-<div>
-<span id="tracking">-</span>
-
-<button id="copyBtn">
-📋 Copy
-</button>
-</div>
-
-</div>
-
-<div class="info-row">
-<span>📝 หมายเหตุ</span>
-<span id="remark">-</span>
-</div>
-
-<div class="info-row">
-<span>📅 อัปเดตล่าสุด</span>
-<span id="update">-</span>
-</div>
-
+<div class="why-card">
+💬
+<h3>ดูแลลูกค้า</h3>
+<p>ตอบคำถามและให้ข้อมูลก่อนสั่งซื้อ</p>
 </div>
 
 </div>
 
 </section>
-
-</main>
 
 <footer>
-
-<a
-href="https://lin.ee/VAJ5e23"
-target="_blank"
-class="line"
->
-LINE
-</a>
-
-<a
-href="https://www.instagram.com/kookv_kpop"
-target="_blank"
-class="ig"
->
-Instagram
-</a>
 
 <p>© 2026 KOOKV_KPOP</p>
 
 </footer>
-
-<script type="module" src="script.js"></script>
 
 </body>
 </html>
