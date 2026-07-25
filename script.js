@@ -1,5 +1,6 @@
-const API_URL =
-"https://script.google.com/macros/s/AKfycbymgbu7Y8lK5I9rtMpkqsMofY_1STPvrHSlrRnHTXhxWrq8JyrQvpq1P7-FECMrCrFW/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbymgbu7Y8lK5I9rtMpkqsMofY_1STPvrHSlrRnHTXhxWrq8JyrQvpq1P7-FECMrCrFW/exec";
+
+// ===== Elements =====
 
 const searchBtn = document.getElementById("searchBtn");
 const searchInput = document.getElementById("searchInput");
@@ -20,23 +21,23 @@ const remark = document.getElementById("remark");
 
 const copyBtn = document.getElementById("copyBtn");
 
+// ==========================
+
 searchBtn.addEventListener("click", searchOrder);
 
-searchInput.addEventListener("keypress", (e) => {
+searchInput.addEventListener("keydown", (e) => {
+
     if (e.key === "Enter") {
+
         searchOrder();
+
     }
-});
-
-copyBtn.addEventListener("click", () => {
-
-    if (tracking.textContent === "-" || tracking.textContent === "") return;
-
-    navigator.clipboard.writeText(tracking.textContent);
-
-    alert("คัดลอกเลข Tracking แล้ว");
 
 });
+
+copyBtn.addEventListener("click", copyTracking);
+
+// ==========================
 
 async function searchOrder() {
 
@@ -44,7 +45,9 @@ async function searchOrder() {
 
     if (!keyword) {
 
-        alert("กรุณากรอกเลขออเดอร์ หรือ Tracking");
+        alert("กรุณากรอกเลขออเดอร์ หรือเลข Tracking");
+
+        searchInput.focus();
 
         return;
 
@@ -57,11 +60,11 @@ async function searchOrder() {
 
     try {
 
-        const res = await fetch(API_URL);
+        const response = await fetch(API_URL);
 
-        const data = await res.json();
+        const orders = await response.json();
 
-        const order = data.find(item =>
+        const order = orders.find(item =>
 
             item.OrderNo?.toLowerCase() === keyword.toLowerCase()
 
@@ -85,26 +88,28 @@ async function searchOrder() {
 
         showOrder(order);
 
-    } catch (err) {
+    } catch (error) {
 
-        console.error(err);
+        console.error(error);
 
-        alert("เชื่อมต่อระบบไม่สำเร็จ");
+        alert("ไม่สามารถเชื่อมต่อระบบได้");
+
+    } finally {
+
+        searchBtn.disabled = false;
+        searchBtn.textContent = "ค้นหา";
 
     }
 
-    searchBtn.disabled = false;
-    searchBtn.textContent = "ค้นหา";
-
 }
 
-function showOrder(order){
+// ==========================
+
+function showOrder(order) {
 
     result.classList.remove("hidden");
 
-    productImage.src =
-        order.Image ||
-        "https://via.placeholder.com/500x500?text=NO+IMAGE";
+    productImage.src = order.Image || "https://via.placeholder.com/500x500?text=NO+IMAGE";
 
     productName.textContent = order.Product || "-";
 
@@ -112,81 +117,120 @@ function showOrder(order){
 
     customer.textContent = order.Customer || "-";
 
-    tracking.textContent = order.Tracking || "-";
-
-    lot.textContent = order.LOT || "-";
+    tracking.textContent = order.Tracking || "ยังไม่มีเลข Tracking";
 
     qty.textContent = order.Qty || "-";
-
-    update.textContent = order.Update || "-";
 
     remark.textContent = order.Remark || "-";
 
     statusBadge.textContent = order.Status || "-";
 
+    // LOT
+
+    if (order.LOT) {
+
+        lot.textContent = order.LOT.replace("LOT", "LOT ");
+
+    } else {
+
+        lot.textContent = "-";
+
+    }
+
+    // วันที่
+
+    if (order.Update) {
+
+        const d = new Date(order.Update);
+
+        update.textContent = d.toLocaleDateString("th-TH", {
+
+            day: "numeric",
+
+            month: "short",
+
+            year: "numeric"
+
+        });
+
+    } else {
+
+        update.textContent = "-";
+
+    }
+
+    // สีสถานะ
+
     setStatusColor(order.Status);
 
-    if(order.Tracking){
+    // ปุ่ม Copy
 
-        copyBtn.style.display="inline-block";
+    if (order.Tracking) {
 
-    }else{
+        copyBtn.style.display = "inline-block";
 
-        copyBtn.style.display="none";
+    } else {
+
+        copyBtn.style.display = "none";
 
     }
 
 }
 
-function setStatusColor(status){
+// ==========================
 
-    statusBadge.style.background="#666";
+function copyTracking() {
 
-    switch(status){
+    if (!tracking.textContent || tracking.textContent === "ยังไม่มีเลข Tracking") {
 
-        case "เปิดรับพรีออเดอร์":
-            statusBadge.style.background="#f4b400";
-            break;
+        return;
 
-        case "ดำเนินการสั่งซื้อแล้ว":
-            statusBadge.style.background="#fb8c00";
-            break;
-
-        case "รอเว็บจัดส่ง":
-            statusBadge.style.background="#2196f3";
-            break;
-
-        case "ดำเนินการส่งกลับไทย":
-            statusBadge.style.background="#7b1fa2";
-            break;
-
-        case "ถึงไทยแล้ว":
-            statusBadge.style.background="#1565c0";
-            break;
-
-        case "กำลังแพ็กสินค้า":
-            statusBadge.style.background="#795548";
-            break;
-
-        case "ส่งแล้ว":
-            statusBadge.style.background="#2e7d32";
-            break;
-
-        case "จัดส่งสำเร็จ":
-            statusBadge.style.background="#00897b";
-            break;
     }
+
+    navigator.clipboard.writeText(tracking.textContent);
+
+    alert("คัดลอกเลข Tracking แล้ว");
 
 }
 
-document.getElementById("thBtn").addEventListener("click",()=>{
+// ==========================
 
-    document.querySelector(".subtitle").innerText="ระบบเช็กสถานะสินค้า";
+function setStatusColor(status) {
+
+    const colors = {
+
+        "เปิดรับพรีออเดอร์": "#F4B400",
+
+        "ดำเนินการสั่งซื้อแล้ว": "#FB8C00",
+
+        "รอเว็บจัดส่ง": "#2196F3",
+
+        "ดำเนินการส่งกลับไทย": "#7B1FA2",
+
+        "ถึงไทยแล้ว": "#1565C0",
+
+        "กำลังแพ็กสินค้า": "#8D6E63",
+
+        "ส่งแล้ว": "#2E7D32",
+
+        "จัดส่งสำเร็จ": "#00897B"
+
+    };
+
+    statusBadge.style.background = colors[status] || "#666";
+
+}
+
+// ==========================
+
+document.getElementById("thBtn").addEventListener("click", () => {
+
+    document.querySelector(".subtitle").textContent = "ระบบเช็กสถานะสินค้า";
 
 });
 
-document.getElementById("enBtn").addEventListener("click",()=>{
+document.getElementById("enBtn").addEventListener("click", () => {
 
-    document.querySelector(".subtitle").innerText="Order Tracking System";
+    document.querySelector(".subtitle").textContent = "Order Tracking System";
 
 });
