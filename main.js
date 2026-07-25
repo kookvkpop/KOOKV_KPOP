@@ -31,9 +31,9 @@ async function loadBanner() {
 
         const banners = await getBanner();
 
-        if (!banners.length) return;
+const banner = banners.find(item => item.Status === "Active");
 
-        const banner = banners[0];
+if (!banner) return;
 
         if (banner.Image) {
 
