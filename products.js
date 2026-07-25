@@ -1,64 +1,168 @@
-const API_URL =
-"https://script.google.com/macros/s/AKfycbwdXnekkPNNav1PbQMt8s01dReumZxkv3c34i6n_xUBjMAmjKSnm1NBtpFvzq7yJtcc/exec?sheet=Products";
+// =========================
+// KOOKV_KPOP Products
+// =========================
 
-const productList = document.getElementById("productList");
+let allProducts = [];
 
-async function loadProducts() {
+document.addEventListener("DOMContentLoaded", async () => {
 
-    productList.innerHTML = "<p style='text-align:center'>กำลังโหลดสินค้า...</p>";
+    await loadProducts();
 
-    try {
+    document
+        .getElementById("searchBox")
+        ?.addEventListener("input", filterProducts);
 
-        const res = await fetch(API_URL);
-        const products = await res.json();
+    document
+        .getElementById("categoryFilter")
+        ?.addEventListener("change", filterProducts);
 
-        productList.innerHTML = "";
+});
 
-        products.forEach(product => {
+async function loadProducts(){
 
-            productList.innerHTML += `
-                <div class="product-card">
+    const container =
+        document.getElementById("productsContainer");
 
-                    <img
-                        src="${product.Image}"
-                        alt="${product.Product}"
-                        onerror="this.src='https://via.placeholder.com/500x500?text=NO+IMAGE'">
+    container.innerHTML =
+        "<div class='loading'>กำลังโหลดสินค้า...</div>";
 
-                    <h2>${product.Product}</h2>
+    allProducts =
+        await getSheet(CONFIG.SHEETS.PRODUCTS);
 
-                    <div class="price">
-                        ฿${product.Price}
-                    </div>
+    if(!allProducts.length){
 
-                    <div class="status">
-                        ${product.Status}
-                    </div>
+        container.innerHTML =
+            "<div class='loading'>ยังไม่มีสินค้า</div>";
 
-                    <button onclick="buyProduct('${product.ProductID}')">
-                        🛒 สั่งซื้อ
-                    </button>
+        return;
+    }
 
-                </div>
-            `;
+    createCategory();
 
-        });
+    renderProducts(allProducts);
 
-    } catch (error) {
+}
 
-        console.error(error);
+function createCategory(){
 
-        productList.innerHTML =
-        "<p style='text-align:center'>โหลดสินค้าไม่สำเร็จ</p>";
+    const select =
+        document.getElementById("categoryFilter");
+
+    if(!select) return;
+
+    const category = [...new Set(
+
+        allProducts.map(p => p.Category)
+
+    )];
+
+    category.forEach(cat=>{
+
+        if(!cat) return;
+
+        const option =
+            document.createElement("option");
+
+        option.value = cat;
+
+        option.textContent = cat;
+
+        select.appendChild(option);
+
+    });
+
+}
+function filterProducts() {
+
+    const keyword = document
+        .getElementById("searchBox")
+        .value
+        .toLowerCase();
+
+    const category = document
+        .getElementById("categoryFilter")
+        .value;
+
+    const result = allProducts.filter(item => {
+
+        const matchName =
+            (item.Product || "")
+            .toLowerCase()
+            .includes(keyword);
+
+        const matchCategory =
+            category === "" ||
+            item.Category === category;
+
+        return matchName && matchCategory;
+
+    });
+
+    renderProducts(result);
+
+}
+
+function renderProducts(products){
+
+    const container =
+        document.getElementById("productsContainer");
+
+    if(!products.length){
+
+        container.innerHTML =
+        "<div class='loading'>ไม่พบสินค้า</div>";
+
+        return;
 
     }
 
+    container.innerHTML = "";
+
+    products.forEach(item=>{
+
+        let statusClass = "status-open";
+
+        const status =
+            (item.Status || "").toLowerCase();
+
+        if(status.includes("ปิด")){
+            statusClass = "status-close";
+        }
+
+        if(status.includes("รอ")){
+            statusClass = "status-coming";
+        }
+
+        container.innerHTML += `
+
+        <div class="product-card">
+
+            <img
+                src="${item.Image || 'https://placehold.co/600x600?text=KOOKV_KPOP'}"
+                alt="${item.Product || ''}">
+
+            <div class="product-info">
+
+                <div class="product-name">
+                    ${item.Product || "-"}
+                </div>
+
+                <div class="product-price">
+                    ฿${Number(item.Price || 0).toLocaleString("th-TH")}
+                </div>
+
+                <span class="product-status ${statusClass}">
+                    ${item.Status || "-"}
+                </span>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
 }
 
-function buyProduct(productID){
-
-    window.location.href =
-    "order.html?id=" + productID;
-
-}
-
-loadProducts();
+console.log("Products Page Loaded");
