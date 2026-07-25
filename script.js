@@ -29,10 +29,13 @@ searchInput.addEventListener("keypress", (e) => {
 });
 
 copyBtn.addEventListener("click", () => {
-    if (tracking.textContent && tracking.textContent !== "-") {
-        navigator.clipboard.writeText(tracking.textContent);
-        alert("คัดลอกเลข Tracking แล้ว");
-    }
+
+    if (tracking.textContent === "-" || tracking.textContent === "") return;
+
+    navigator.clipboard.writeText(tracking.textContent);
+
+    alert("คัดลอกเลข Tracking แล้ว");
+
 });
 
 async function searchOrder() {
@@ -40,18 +43,22 @@ async function searchOrder() {
     const keyword = searchInput.value.trim();
 
     if (!keyword) {
-        alert("กรุณากรอกข้อมูล");
+
+        alert("กรุณากรอกเลขออเดอร์ หรือ Tracking");
+
         return;
+
     }
 
     result.classList.add("hidden");
 
     searchBtn.disabled = true;
-    searchBtn.innerText = "กำลังค้นหา...";
+    searchBtn.textContent = "กำลังค้นหา...";
 
     try {
 
         const res = await fetch(API_URL);
+
         const data = await res.json();
 
         const order = data.find(item =>
@@ -72,57 +79,114 @@ async function searchOrder() {
 
             alert("ไม่พบข้อมูล");
 
-            searchBtn.disabled = false;
-            searchBtn.innerText = "ค้นหา";
-
             return;
+
         }
 
         showOrder(order);
 
-    } catch (error) {
+    } catch (err) {
 
-        console.error(error);
-        alert("ไม่สามารถเชื่อมต่อระบบได้");
+        console.error(err);
+
+        alert("เชื่อมต่อระบบไม่สำเร็จ");
 
     }
 
     searchBtn.disabled = false;
-    searchBtn.innerText = "ค้นหา";
+    searchBtn.textContent = "ค้นหา";
 
 }
 
-function showOrder(order) {
+function showOrder(order){
 
     result.classList.remove("hidden");
 
     productImage.src =
-        order.Image || "https://via.placeholder.com/300x300?text=No+Image";
+        order.Image ||
+        "https://via.placeholder.com/500x500?text=NO+IMAGE";
 
     productName.textContent = order.Product || "-";
 
     orderNo.textContent = order.OrderNo || "-";
+
     customer.textContent = order.Customer || "-";
+
     tracking.textContent = order.Tracking || "-";
+
     lot.textContent = order.LOT || "-";
+
     qty.textContent = order.Qty || "-";
+
     update.textContent = order.Update || "-";
+
     remark.textContent = order.Remark || "-";
 
     statusBadge.textContent = order.Status || "-";
 
+    setStatusColor(order.Status);
+
+    if(order.Tracking){
+
+        copyBtn.style.display="inline-block";
+
+    }else{
+
+        copyBtn.style.display="none";
+
+    }
+
 }
 
-document.getElementById("thBtn").addEventListener("click", () => {
+function setStatusColor(status){
 
-    document.querySelector(".subtitle").innerText =
-        "ระบบเช็กสถานะสินค้า";
+    statusBadge.style.background="#666";
+
+    switch(status){
+
+        case "เปิดรับพรีออเดอร์":
+            statusBadge.style.background="#f4b400";
+            break;
+
+        case "ดำเนินการสั่งซื้อแล้ว":
+            statusBadge.style.background="#fb8c00";
+            break;
+
+        case "รอเว็บจัดส่ง":
+            statusBadge.style.background="#2196f3";
+            break;
+
+        case "ดำเนินการส่งกลับไทย":
+            statusBadge.style.background="#7b1fa2";
+            break;
+
+        case "ถึงไทยแล้ว":
+            statusBadge.style.background="#1565c0";
+            break;
+
+        case "กำลังแพ็กสินค้า":
+            statusBadge.style.background="#795548";
+            break;
+
+        case "ส่งแล้ว":
+            statusBadge.style.background="#2e7d32";
+            break;
+
+        case "จัดส่งสำเร็จ":
+            statusBadge.style.background="#00897b";
+            break;
+    }
+
+}
+
+document.getElementById("thBtn").addEventListener("click",()=>{
+
+    document.querySelector(".subtitle").innerText="ระบบเช็กสถานะสินค้า";
 
 });
 
-document.getElementById("enBtn").addEventListener("click", () => {
+document.getElementById("enBtn").addEventListener("click",()=>{
 
-    document.querySelector(".subtitle").innerText =
-        "Order Tracking System";
+    document.querySelector(".subtitle").innerText="Order Tracking System";
 
 });
