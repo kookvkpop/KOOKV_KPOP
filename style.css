@@ -334,3 +334,44 @@ section h2{
     }
 
 }
+
+/* =========================
+   Product Detail
+========================= */
+
+.product-detail{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:start;
+    margin:40px 0;
+}
+
+.detail-image{
+    width:100%;
+    border-radius:20px;
+    object-fit:cover;
+    background:#1b1b22;
+}
+
+.detail-info h1{
+    font-size:36px;
+    margin-bottom:15px;
+}
+
+.detail-info p{
+    margin:15px 0;
+    color:#dddddd;
+}
+
+@media(max-width:768px){
+
+    .product-detail{
+        grid-template-columns:1fr;
+    }
+
+    .detail-info h1{
+        font-size:28px;
+    }
+
+}
