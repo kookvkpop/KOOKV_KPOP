@@ -1,6 +1,6 @@
-/* =========================
-   KOOKV_KPOP Theme
-========================= */
+/* ==========================
+   KOOKV_KPOP Version 2
+========================== */
 
 *{
 margin:0;
@@ -10,105 +10,124 @@ font-family:'Noto Sans Thai',sans-serif;
 }
 
 body{
-background:#0f0f0f;
+background:#111;
 color:#fff;
+line-height:1.6;
 }
 
 .container{
 width:90%;
 max-width:1100px;
 margin:auto;
-padding:30px 20px;
+padding:30px 15px;
 }
 
+/* ==========================
+   Header
+========================== */
+
 header{
+padding:40px 20px;
 text-align:center;
-margin-bottom:30px;
 }
 
 .logo img{
-width:180px;
-max-width:100%;
+width:170px;
+height:170px;
 border-radius:50%;
-box-shadow:0 0 30px rgba(255,0,0,.4);
+object-fit:cover;
+box-shadow:0 0 30px rgba(217,4,41,.35);
 }
 
 h1{
 margin-top:20px;
-font-size:38px;
+font-size:40px;
 font-weight:700;
-color:#fff;
 }
 
 .subtitle{
-color:#bbb;
-margin-top:10px;
+margin-top:8px;
+color:#bdbdbd;
+font-size:18px;
 }
 
 .language{
-margin-top:20px;
+margin-top:25px;
 display:flex;
 justify-content:center;
-gap:10px;
+gap:12px;
 flex-wrap:wrap;
 }
 
 .language button{
-background:#202020;
-color:#fff;
+padding:10px 18px;
 border:none;
-padding:10px 20px;
 border-radius:10px;
+background:#222;
+color:#fff;
 cursor:pointer;
-transition:.3s;
+transition:.25s;
+font-size:15px;
 }
 
 .language button:hover{
 background:#d90429;
 }
 
+/* ==========================
+   Search
+========================== */
+
 .search-card{
 background:#1b1b1b;
-padding:30px;
 border-radius:20px;
-margin-top:30px;
-box-shadow:0 0 20px rgba(255,0,0,.15);
+padding:30px;
+box-shadow:0 10px 25px rgba(0,0,0,.35);
 }
 
 .search-card h2{
 text-align:center;
-margin-bottom:15px;
+margin-bottom:10px;
+font-size:28px;
 }
 
 .search-card p{
 text-align:center;
-color:#aaa;
-margin-bottom:20px;
+color:#b8b8b8;
+margin-bottom:25px;
 }
 
 .search-box{
 display:flex;
-gap:10px;
+gap:15px;
 flex-wrap:wrap;
 }
 
 .search-box input{
 flex:1;
-padding:15px;
+padding:16px;
+font-size:17px;
 border:none;
-border-radius:10px;
-font-size:16px;
+border-radius:12px;
+outline:none;
+background:#2b2b2b;
+color:#fff;
+}
+
+.search-box input::placeholder{
+color:#888;
 }
 
 .search-box button{
-background:#d90429;
-color:white;
+padding:16px 35px;
 border:none;
-padding:15px 30px;
-border-radius:10px;
+border-radius:12px;
+background:#d90429;
+color:#fff;
+font-size:17px;
+font-weight:bold;
 cursor:pointer;
-font-size:16px;
-transition:.3s;
+transition:.25s;
 }
 
 .search-box button:hover{
@@ -118,79 +137,103 @@ background:#ff2d55;
 .hidden{
 display:none;
 }
+/* ==========================
+   Result Card
+========================== */
 
 #result{
-margin-top:30px;
+margin-top:35px;
 display:grid;
 grid-template-columns:320px 1fr;
 gap:30px;
 background:#1b1b1b;
-padding:25px;
+padding:30px;
 border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,.35);
 }
 
 .product img{
 width:100%;
-border-radius:15px;
-background:#333;
+aspect-ratio:1/1;
+object-fit:cover;
+border-radius:18px;
+border:1px solid #333;
+background:#2b2b2b;
 }
 
-.detail table{
-width:100%;
-border-collapse:collapse;
+.detail h2{
+font-size:28px;
+margin-bottom:20px;
 }
 
-.detail td{
-padding:12px;
-border-bottom:1px solid #333;
+.info-card{
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.info-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+padding:14px 16px;
+background:#252525;
+border-radius:12px;
+}
+
+.info-row span:first-child{
+color:#cfcfcf;
+font-weight:500;
+}
+
+.info-row strong{
+font-size:18px;
+color:#fff;
+}
+
+#statusBadge{
+display:inline-block;
+padding:8px 18px;
+border-radius:999px;
+font-weight:700;
+color:#fff;
+background:#666;
 }
 
 #copyBtn{
 margin-left:10px;
-background:#444;
-color:white;
+padding:8px 14px;
 border:none;
-padding:6px 12px;
 border-radius:8px;
-cursor:pointer;
-}
-
-#statusBadge{
 background:#d90429;
-padding:8px 15px;
-border-radius:30px;
-font-weight:bold;
+color:#fff;
+cursor:pointer;
+transition:.25s;
 }
 
-#timeline{
-margin-top:30px;
-background:#1b1b1b;
-padding:25px;
-border-radius:20px;
+#copyBtn:hover{
+background:#ff2d55;
 }
 
-.step{
-padding:15px;
-margin:10px 0;
-background:#2b2b2b;
-border-left:5px solid #d90429;
-border-radius:10px;
-}
+/* ==========================
+   Footer
+========================== */
 
 footer{
-margin-top:40px;
+margin:50px 0 30px;
 text-align:center;
 }
 
 footer a{
 display:inline-block;
-margin:10px;
-padding:12px 25px;
+margin:8px;
+padding:12px 24px;
 background:#d90429;
-color:white;
+color:#fff;
 text-decoration:none;
 border-radius:10px;
-transition:.3s;
+transition:.25s;
 }
 
 footer a:hover{
@@ -202,69 +245,52 @@ margin-top:20px;
 color:#888;
 }
 
-@media(max-width:768px){
+/* ==========================
+   Responsive
+========================== */
 
-#result{
+@media (max-width:768px){
 
-grid-template-columns:1fr;
-
-}
-
-.search-box{
-
-flex-direction:column;
-
-}
-
-.search-box button{
-
-width:100%;
-
+.container{
+width:94%;
+padding:20px 10px;
 }
 
 .logo img{
-
-width:150px;
-
+width:140px;
+height:140px;
 }
 
 h1{
-
-font-size:30px;
-
+font-size:32px;
 }
 
+.search-box{
+flex-direction:column;
 }
-.product img{
-aspect-ratio:1/1;
-object-fit:cover;
-border:1px solid #444;
+
+.search-box button{
+width:100%;
 }
 
 #result{
-box-shadow:0 0 20px rgba(255,0,0,.2);
+grid-template-columns:1fr;
+padding:20px;
 }
 
-#statusBadge{
-display:inline-block;
-padding:8px 18px;
-border-radius:999px;
-font-weight:700;
+.detail h2{
+font-size:24px;
+text-align:center;
 }
 
-.step{
-display:flex;
-align-items:center;
-gap:15px;
+.info-row{
+flex-direction:column;
+align-items:flex-start;
 }
 
-.step span{
-width:34px;
-height:34px;
-border-radius:50%;
-background:#444;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:bold;
+#copyBtn{
+margin-top:10px;
+margin-left:0;
+}
+
 }
