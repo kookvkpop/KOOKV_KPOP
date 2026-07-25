@@ -4,62 +4,125 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KOOKV_KPOP | Shop</title>
+<title>สินค้าทั้งหมด | KOOKV_KPOP</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
-<header>
+<header class="navbar">
+
+<div class="container">
 
 <div class="logo">
-
-<img src="https://drive.google.com/thumbnail?id=1vqRCoAh1iXxq_5GVUD94ySXUJmUkHvHk&sz=w500" alt="KOOKV_KPOP">
-
-<h1>KOOKV_KPOP</h1>
-
-<p class="subtitle">
-BTS & K-POP Official Merchandise
-</p>
-
+KOOKV<span>_KPOP</span>
 </div>
 
-<nav class="navbar">
+<nav>
 
-<a href="products.html">🏠 Home</a>
+<ul>
 
-<a href="#">🛍 Products</a>
+<li><a href="index.html">หน้าแรก</a></li>
 
-<a href="index.html">📦 Track Order</a>
+<li><a href="products.html">สินค้าทั้งหมด</a></li>
 
-<a href="#">📢 News</a>
+<li><a href="track.html">เช็คสถานะ</a></li>
 
-<a href="#">💬 Contact</a>
+<li><a href="contact.html">ติดต่อร้าน</a></li>
+
+</ul>
 
 </nav>
 
+</div>
+
 </header>
 
-<main class="container">
+<section>
 
-<h2 class="section-title">
-🛍️ สินค้าพร้อมสั่งซื้อ
-</h2>
+<div class="container">
 
-<div id="productList" class="products-grid"></div>
+<h2>สินค้าทั้งหมด</h2>
 
-</main>
+<div style="margin:25px 0;display:flex;gap:15px;flex-wrap:wrap;">
 
-<script src="products.js"></script>
+<input
+type="text"
+id="searchBox"
+placeholder="ค้นหาสินค้า..."
+style="flex:1;padding:14px;border-radius:10px;border:none;">
+
+<select
+id="categoryFilter"
+style="padding:14px;border-radius:10px;border:none;">
+
+<option value="">ทุกหมวดหมู่</option>
+
+</select>
+
+</div>
+
+<div
+id="productsContainer"
+class="product-grid">
+
+<div class="loading">
+
+กำลังโหลดสินค้า...
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+<footer class="footer">
+
+    <div class="container">
+
+        <h3>KOOKV_KPOP</h3>
+
+        <p>
+            ร้านพรีออเดอร์สินค้า K-POP Official Goods
+        </p>
+
+        <div class="footer-menu">
+
+            <a href="index.html">หน้าแรก</a>
+
+            <a href="products.html">สินค้า</a>
+
+            <a href="track.html">เช็คสถานะ</a>
+
+            <a href="contact.html">ติดต่อร้าน</a>
+
+        </div>
+
+        <p class="copyright">
+
+            © 2026 KOOKV_KPOP All Rights Reserved.
+
+        </p>
+
+    </div>
+
+</footer>
+
+<script src="js/config.js"></script>
+
+<script src="js/products.js"></script>
 
 </body>
 
