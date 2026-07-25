@@ -31,17 +31,37 @@ async function loadBanner() {
 
         const banners = await getBanner();
 
-const banner = banners.find(item => item.Status === "Active");
+        if (!banners || banners.length === 0) {
+            console.log("No Banner");
+            return;
+        }
 
-if (!banner) return;
+        const banner =
+            banners.find(item => String(item.Status).trim() === "Active")
+            || banners[0];
+
+        let image = "";
 
         if (banner.Image) {
 
-            hero.style.backgroundImage =
-                `linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.65)),url('${banner.Image}')`;
+            image = String(banner.Image).trim();
 
-            hero.style.backgroundSize = "cover";
-            hero.style.backgroundPosition = "center";
+            // ถ้ายังเป็นลิงก์ Google Drive แบบ file/d/
+            if (image.includes("/file/d/")) {
+
+                const id = image.split("/d/")[1].split("/")[0];
+
+                image =
+                    `https://drive.google.com/thumbnail?id=${id}&sz=w2000`;
+
+            }
+
+        }
+
+        if (image !== "") {
+
+            hero.style.background =
+                `linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),url("${image}") center center / cover no-repeat`;
 
         }
 
@@ -51,21 +71,15 @@ if (!banner) return;
         description.textContent =
             banner.Description || "";
 
-        if (banner.Link) {
+        button.textContent =
+            banner.Button || "ดูสินค้า";
 
-            button.href = banner.Link;
+        button.href =
+            banner.Link || "products.html";
 
-        }
+    } catch (err) {
 
-        if (banner.Button) {
-
-            button.textContent = banner.Button;
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
+        console.error("Banner Error :", err);
 
     }
 
