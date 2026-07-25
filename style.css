@@ -7,7 +7,7 @@
 
 body{
     background:#0f0f12;
-    color:#fff;
+    color:#ffffff;
     line-height:1.6;
 }
 
@@ -21,6 +21,10 @@ a{
     max-width:1200px;
     margin:auto;
 }
+
+/* =========================
+   Navbar
+========================= */
 
 .navbar{
     position:sticky;
@@ -40,7 +44,7 @@ a{
 .logo{
     font-size:28px;
     font-weight:700;
-    color:#fff;
+    color:#ffffff;
 }
 
 .logo span{
@@ -61,6 +65,10 @@ nav a:hover{
     color:#9b5cff;
 }
 
+/* =========================
+   Hero
+========================= */
+
 .hero{
     height:520px;
     display:flex;
@@ -69,8 +77,8 @@ nav a:hover{
     text-align:center;
     position:relative;
     background:
-    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
-    url("../assets/banner/banner.jpg") center/cover;
+        linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+        url("../assets/banner/banner.jpg") center/cover;
 }
 
 .hero-content{
@@ -85,16 +93,22 @@ nav a:hover{
 
 .hero p{
     font-size:20px;
-    color:#ddd;
+    color:#dddddd;
     margin-bottom:30px;
 }
+
+/* =========================
+   Button
+========================= */
 
 .btn{
     display:inline-block;
     padding:14px 35px;
+    border:none;
     border-radius:40px;
     background:#8b5cf6;
-    color:#fff;
+    color:#ffffff;
+    cursor:pointer;
     font-weight:600;
     transition:.3s;
 }
@@ -102,6 +116,10 @@ nav a:hover{
 .btn:hover{
     background:#6d28d9;
 }
+
+/* =========================
+   Section
+========================= */
 
 section{
     padding:70px 0;
@@ -114,30 +132,46 @@ section h2{
 
 .loading{
     text-align:center;
-    color:#aaa;
+    color:#aaaaaa;
     padding:40px;
 }
 
+/* =========================
+   Product Grid
+========================= */
+
 .product-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:25px;
 }
 
+/* =========================
+   Product Card
+========================= */
+
 .product-card{
+    display:block;
     background:#1b1b22;
     border-radius:18px;
     overflow:hidden;
+    text-decoration:none;
+    color:#ffffff;
     transition:.3s;
+    border:1px solid transparent;
 }
 
 .product-card:hover{
     transform:translateY(-8px);
+    border-color:#9b5cff;
+    box-shadow:0 12px 28px rgba(155,92,255,.25);
 }
+
 .product-card img{
     width:100%;
     height:300px;
     object-fit:cover;
+    display:block;
 }
 
 .product-info{
@@ -163,22 +197,27 @@ section h2{
     border-radius:20px;
     font-size:14px;
     font-weight:600;
+    margin-top:10px;
 }
 
 .status-open{
     background:#22c55e;
-    color:#fff;
+    color:#ffffff;
 }
 
 .status-close{
     background:#ef4444;
-    color:#fff;
+    color:#ffffff;
 }
 
 .status-coming{
     background:#f59e0b;
-    color:#fff;
+    color:#ffffff;
 }
+
+/* =========================
+   Title
+========================= */
 
 .title-row{
     display:flex;
@@ -191,6 +230,10 @@ section h2{
     color:#b388ff;
     font-weight:600;
 }
+
+/* =========================
+   Announcement
+========================= */
 
 .announcement{
     background:#17171d;
@@ -208,6 +251,10 @@ section h2{
     border-left:5px solid #8b5cf6;
     border-radius:10px;
 }
+
+/* =========================
+   Footer
+========================= */
 
 .footer{
     background:#111114;
@@ -238,9 +285,13 @@ section h2{
 }
 
 .copyright{
+    color:#888888;
     font-size:14px;
-    color:#888;
 }
+
+/* =========================
+   Responsive
+========================= */
 
 @media(max-width:768px){
 
@@ -269,7 +320,7 @@ section h2{
     }
 
     section h2{
-        font-size:26px;
+        font-size:28px;
     }
 
     .product-grid{
