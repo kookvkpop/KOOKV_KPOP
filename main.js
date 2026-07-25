@@ -1,120 +1,185 @@
-// =========================
-// KOOKV_KPOP Main Script
-// =========================
+// ==========================================
+// KOOKV_KPOP Main.js V2
+// ==========================================
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadAnnouncements();
-    loadProducts();
-    loadBanner();
+    init();
 });
 
-// =========================
-// โหลดประกาศ
-// =========================
-async function loadAnnouncements() {
+async function init() {
+    await Promise.all([
+        loadBanner(),
+        loadAnnouncements(),
+        loadProducts()
+    ]);
+}
 
-    const list = document.getElementById("announcementList");
+// ==========================================
+// Banner
+// ==========================================
 
-    if (!list) return;
+async function loadBanner() {
 
-    const data = await getSheet(CONFIG.SHEETS.ANNOUNCEMENTS);
+    try {
 
-    if (!data || data.length === 0) {
-        list.innerHTML = `
-            <div class="announcement-item">
-                ยังไม่มีประกาศ
-            </div>
-        `;
-        return;
+        const banners = await getSheet(CONFIG.SHEETS.BANNER);
+
+        console.log("Banner :", banners);
+
+        // จะเพิ่ม Banner Slider ในเวอร์ชันถัดไป
+
+    } catch (error) {
+
+        console.error(error);
+
     }
-
-    list.innerHTML = "";
-
-    data.forEach(item => {
-
-        const div = document.createElement("div");
-
-        div.className = "announcement-item";
-
-        div.innerHTML = `
-            <h3>${item.Title || ""}</h3>
-            <p>${item.Detail || ""}</p>
-        `;
-
-        list.appendChild(div);
-
-    });
 
 }
 
-// =========================
-// โหลดสินค้า
-// =========================
-async function loadProducts() {
+// ==========================================
+// Announcement
+// ==========================================
 
-    const homeContainer = document.getElementById("homeProducts");
-    const newContainer = document.getElementById("newProducts");
+async function loadAnnouncements() {
 
-    if (!homeContainer) return;
+    const container = document.getElementById("announcementList");
 
-    const products = await getSheet(CONFIG.SHEETS.PRODUCTS);
+    if (!container) return;
 
-    if (!products || products.length === 0) {
+    try {
 
-        homeContainer.innerHTML = `
-            <div class="loading">
-                ยังไม่มีสินค้า
-            </div>
-        `;
+        const announcements = await getSheet(CONFIG.SHEETS.ANNOUNCEMENTS);
 
-        if (newContainer) {
+        if (!announcements.length) {
 
-            newContainer.innerHTML = `
-                <div class="loading">
-                    ยังไม่มีสินค้า
+            container.innerHTML = `
+                <div class="announcement-item">
+                    ยังไม่มีประกาศ
                 </div>
             `;
 
+            return;
+
         }
 
-        return;
+        container.innerHTML = "";
+
+        announcements.forEach(item => {
+
+            container.innerHTML += `
+
+                <div class="announcement-item">
+
+                    <h3>${item.Title || ""}</h3>
+
+                    <p>${item.Detail || ""}</p>
+
+                </div>
+
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+            <div class="announcement-item">
+                ไม่สามารถโหลดประกาศได้
+            </div>
+        `;
+
     }
-
-    homeContainer.innerHTML = "";
-
-    if (newContainer) {
-        newContainer.innerHTML = "";
-    }
-
-    products.forEach((item, index) => {
-
-        homeContainer.appendChild(createProductCard(item));
-
-        if (newContainer && index < 4) {
-            newContainer.appendChild(createProductCard(item));
-        }
-
-    });
 
 }
 
-// =========================
-// สร้างการ์ดสินค้า
-// =========================
+// ==========================================
+// Products
+// ==========================================
+
+async function loadProducts() {
+
+    const home = document.getElementById("homeProducts");
+    const newest = document.getElementById("newProducts");
+
+    if (!home) return;
+
+    try {
+
+        const products = await getSheet(CONFIG.SHEETS.PRODUCTS);
+
+        if (!products.length) {
+
+            home.innerHTML =
+                "<div class='loading'>ยังไม่มีสินค้า</div>";
+
+            if (newest) {
+
+                newest.innerHTML =
+                    "<div class='loading'>ยังไม่มีสินค้า</div>";
+
+            }
+
+            return;
+
+        }
+
+        home.innerHTML = "";
+
+        if (newest) {
+
+            newest.innerHTML = "";
+
+        }
+
+        products.forEach((product, index) => {
+
+            home.appendChild(createProductCard(product));
+
+            if (newest && index < 4) {
+
+                newest.appendChild(createProductCard(product));
+
+            }
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        home.innerHTML =
+            "<div class='loading'>โหลดสินค้าไม่สำเร็จ</div>";
+
+    }
+
+}
+
+// ==========================================
+// Product Card
+// ==========================================
+
 function createProductCard(item) {
 
-    const card = document.createElement("div");
+    const card = document.createElement("a");
 
     card.className = "product-card";
+
+    card.href = `product.html?id=${encodeURIComponent(item.ProductID)}`;
 
     let statusClass = "status-open";
 
     const status = (item.Status || "").toLowerCase();
 
     if (status.includes("ปิด")) {
+
         statusClass = "status-close";
+
     } else if (status.includes("รอ")) {
+
         statusClass = "status-coming";
+
     }
 
     const image =
@@ -128,7 +193,7 @@ function createProductCard(item) {
             src="${image}"
             alt="${item.Product || ""}"
             loading="lazy"
-            onerror="this.src='https://placehold.co/600x600?text=KOOKV_KPOP'">
+            onerror="this.src='https://placehold.co/600x600?text=No+Image'">
 
         <div class="product-info">
 
@@ -148,7 +213,7 @@ function createProductCard(item) {
                 ${item.Status || "-"}
             </span>
 
-            <p style="margin-top:15px;font-size:14px;">
+            <p style="margin-top:14px;font-size:14px;">
                 📦 <strong>สต็อก :</strong>
                 ${item.Stock || "-"}
             </p>
@@ -166,19 +231,8 @@ function createProductCard(item) {
 
 }
 
-// =========================
-// โหลด Banner
-// =========================
-async function loadBanner() {
+// ==========================================
+// Console
+// ==========================================
 
-    const banners = await getSheet(CONFIG.SHEETS.BANNER);
-
-    console.log("Banner :", banners);
-
-}
-
-// =========================
-// เริ่มต้นเว็บไซต์
-// =========================
-
-console.log("KOOKV_KPOP Website Loaded");
+console.log("KOOKV_KPOP Main.js V2 Loaded");
