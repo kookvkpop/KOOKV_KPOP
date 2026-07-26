@@ -4,7 +4,6 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>เช็คสถานะสินค้า | KOOKV_KPOP</title>
@@ -12,7 +11,6 @@
 <link rel="stylesheet" href="style.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -26,9 +24,7 @@
 <div class="container">
 
 <div class="logo">
-
 KOOKV<span>_KPOP</span>
-
 </div>
 
 <nav>
@@ -39,7 +35,7 @@ KOOKV<span>_KPOP</span>
 
 <li><a href="products.html">สินค้าทั้งหมด</a></li>
 
-<li><a href="track.html">เช็คสถานะ</a></li>
+<li><a href="track.html" class="active">เช็คสถานะ</a></li>
 
 <li><a href="contact.html">ติดต่อร้าน</a></li>
 
@@ -51,23 +47,28 @@ KOOKV<span>_KPOP</span>
 
 </header>
 
-<section>
+
+<section class="track-page">
 
 <div class="container">
 
-<h2>เช็คสถานะออเดอร์</h2>
+<div class="track-card">
 
-<p style="margin-bottom:20px;color:#bbb;">
-กรอกเลขออเดอร์เพื่อเช็คสถานะสินค้า
+<h1>📦 เช็คสถานะออเดอร์</h1>
+
+<p class="track-desc">
+ค้นหาด้วย <strong>เลขออเดอร์</strong>,
+<strong>ชื่อลูกค้า</strong>
+หรือ
+<strong>เลขพัสดุ</strong>
 </p>
 
-<div style="display:flex;gap:15px;flex-wrap:wrap;">
+<div class="track-search">
 
 <input
 type="text"
 id="orderInput"
-placeholder="เช่น KOOKV001"
-style="flex:1;padding:15px;border:none;border-radius:10px;">
+placeholder="เช่น KV001 หรือ Preem หรือ TH123456789">
 
 <button
 id="searchBtn"
@@ -79,47 +80,52 @@ class="btn">
 
 </div>
 
-<div
-id="resultBox"
-style="margin-top:40px;">
-
 </div>
+
+
+<div id="resultBox"></div>
 
 </div>
 
 </section>
+
+
 <footer class="footer">
 
-    <div class="container">
+<div class="container">
 
-        <h3>KOOKV_KPOP</h3>
+<h3>KOOKV_KPOP</h3>
 
-        <p>
-            ร้านพรีออเดอร์สินค้า K-POP Official Goods
-        </p>
+<p>
+ร้านพรีออเดอร์สินค้า K-POP Official Goods
+</p>
 
-        <div class="footer-menu">
+<div class="footer-menu">
 
-            <a href="index.html">หน้าแรก</a>
+<a href="index.html">หน้าแรก</a>
 
-            <a href="products.html">สินค้า</a>
+<a href="products.html">สินค้า</a>
 
-            <a href="track.html">เช็คสถานะ</a>
+<a href="track.html">เช็คสถานะ</a>
 
-            <a href="contact.html">ติดต่อร้าน</a>
+<a href="contact.html">ติดต่อร้าน</a>
 
-        </div>
+</div>
 
-        <p class="copyright">
-            © 2026 KOOKV_KPOP All Rights Reserved.
-        </p>
+<p class="copyright">
 
-    </div>
+© 2026 KOOKV_KPOP All Rights Reserved.
+
+</p>
+
+</div>
 
 </footer>
+
 
 <script src="config.js"></script>
 <script src="track.js"></script>
 
 </body>
+
 </html>
