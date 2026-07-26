@@ -702,3 +702,39 @@ footer .container{
     }
 
 }
+
+.contact-note{
+    margin-top:60px;
+    background:#1f1f29;
+    border:1px solid #38384d;
+    border-radius:18px;
+    padding:30px;
+}
+
+.contact-note h2{
+    margin-bottom:18px;
+    color:#c89cff;
+}
+
+.contact-note ul{
+    padding-left:20px;
+    line-height:2;
+    color:#ddd;
+}
+
+.contact-thanks{
+    margin-top:50px;
+    text-align:center;
+    border-top:1px solid #333;
+    padding-top:40px;
+}
+
+.contact-thanks h2{
+    color:#c89cff;
+    margin-bottom:10px;
+}
+
+.contact-thanks p{
+    color:#bdbdbd;
+    line-height:1.8;
+}
