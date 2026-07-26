@@ -21,6 +21,7 @@ async function init() {
 async function loadBanner() {
 
     const hero = document.getElementById("heroBanner");
+    const heroImage = document.getElementById("heroImage");
     const title = document.getElementById("heroTitle");
     const description = document.getElementById("heroDescription");
     const button = document.getElementById("heroButton");
@@ -58,12 +59,11 @@ async function loadBanner() {
 
         }
 
-        if (image !== "") {
+        if (banner.Image && heroImage) {
 
-            hero.style.background =
-                `linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),url("${image}") center center / cover no-repeat`;
+    heroImage.src = banner.Image;
 
-        }
+}
 
         title.textContent =
             banner.Title || CONFIG.SHOP_NAME;
