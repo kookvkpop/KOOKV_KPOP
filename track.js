@@ -38,6 +38,8 @@ async function loadOrders() {
 
         console.log("Orders :", orders);
 
+alert(JSON.stringify(orders));
+
     }
 
     catch (err) {
@@ -89,16 +91,19 @@ function searchOrder() {
     const result = orders.filter(item => {
 
         const orderNo =
-            String(item.OrderNo || "")
-            .toUpperCase();
+    String(item.OrderNo || "")
+    .trim()
+    .toUpperCase();
 
-        const customer =
-            String(item.Customer || "")
-            .toUpperCase();
+const customer =
+    String(item.Customer || "")
+    .trim()
+    .toUpperCase();
 
-        const tracking =
-            String(item.Tracking || "")
-            .toUpperCase();
+const tracking =
+    String(item.Tracking || "")
+    .trim()
+    .toUpperCase();
 
         return (
 
