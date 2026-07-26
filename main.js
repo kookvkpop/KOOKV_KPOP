@@ -1,17 +1,25 @@
 // ==========================================
-// KOOKV_KPOP Main.js V2
+// KOOKV_KPOP Main.js V3
 // ==========================================
 
-document.addEventListener("DOMContentLoaded", () => {
-    init();
-});
+document.addEventListener("DOMContentLoaded", init);
 
 async function init() {
-    await Promise.all([
-        loadBanner(),
-        loadAnnouncements(),
-        loadProducts()
-    ]);
+
+    try {
+
+        await Promise.all([
+            loadBanner(),
+            loadAnnouncements(),
+            loadProducts()
+        ]);
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
 }
 
 // ==========================================
@@ -20,22 +28,18 @@ async function init() {
 
 async function loadBanner() {
 
-    const hero = document.getElementById("heroBanner");
     const heroImage = document.getElementById("heroImage");
-    const title = document.getElementById("heroTitle");
-    const description = document.getElementById("heroDescription");
-    const button = document.getElementById("heroButton");
+    const heroTitle = document.getElementById("heroTitle");
+    const heroDescription = document.getElementById("heroDescription");
+    const heroButton = document.getElementById("heroButton");
 
-    if (!hero) return;
+    if (!heroImage) return;
 
     try {
 
         const banners = await getBanner();
 
-        if (!banners || banners.length === 0) {
-            console.log("No Banner");
-            return;
-        }
+        if (!banners.length) return;
 
         const banner =
             banners.find(item => String(item.Status).trim() === "Active")
@@ -47,7 +51,7 @@ async function loadBanner() {
 
             image = String(banner.Image).trim();
 
-            // ถ้ายังเป็นลิงก์ Google Drive แบบ file/d/
+            // Google Drive file link
             if (image.includes("/file/d/")) {
 
                 const id = image.split("/d/")[1].split("/")[0];
@@ -57,29 +61,44 @@ async function loadBanner() {
 
             }
 
+            // Google Drive uc link
+            else if (image.includes("uc?export=view&id=")) {
+
+                const id = image.split("id=")[1];
+
+                image =
+                    `https://drive.google.com/thumbnail?id=${id}&sz=w2000`;
+
+            }
+
         }
 
-        if (banner.Image && heroImage) {
+        heroImage.src = image;
 
-    heroImage.src = banner.Image;
+        heroImage.alt = banner.Title || "Banner";
 
-}
+        heroImage.onerror = function () {
 
-        title.textContent =
+            this.src =
+                "https://placehold.co/1600x700?text=KOOKV_KPOP";
+
+        };
+
+        heroTitle.textContent =
             banner.Title || CONFIG.SHOP_NAME;
 
-        description.textContent =
+        heroDescription.textContent =
             banner.Description || "";
 
-        button.textContent =
+        heroButton.textContent =
             banner.Button || "ดูสินค้า";
 
-        button.href =
+        heroButton.href =
             banner.Link || "products.html";
 
     } catch (err) {
 
-        console.error("Banner Error :", err);
+        console.error("Banner :", err);
 
     }
 
@@ -91,13 +110,15 @@ async function loadBanner() {
 
 async function loadAnnouncements() {
 
-    const container = document.getElementById("announcementList");
+    const container =
+        document.getElementById("announcementList");
 
     if (!container) return;
 
     try {
 
-        const announcements = await getSheet(CONFIG.SHEETS.ANNOUNCEMENTS);
+        const announcements =
+            await getAnnouncements();
 
         if (!announcements.length) {
 
@@ -116,26 +137,26 @@ async function loadAnnouncements() {
         announcements.forEach(item => {
 
             container.innerHTML += `
-
                 <div class="announcement-item">
 
                     <h3>${item.Title || ""}</h3>
 
-                    <p>${item.Description || item.Detail || ""}</p>
+                    <p>
+                        ${item.Description || item.Detail || ""}
+                    </p>
 
                 </div>
-
             `;
 
         });
 
-    } catch (error) {
+    } catch (err) {
 
-        console.error(error);
+        console.error(err);
 
         container.innerHTML = `
             <div class="announcement-item">
-                ไม่สามารถโหลดประกาศได้
+                โหลดประกาศไม่สำเร็จ
             </div>
         `;
 
@@ -149,14 +170,18 @@ async function loadAnnouncements() {
 
 async function loadProducts() {
 
-    const home = document.getElementById("homeProducts");
-    const newest = document.getElementById("newProducts");
+    const home =
+        document.getElementById("homeProducts");
+
+    const newest =
+        document.getElementById("newProducts");
 
     if (!home) return;
 
     try {
 
-        const products = await getSheet(CONFIG.SHEETS.PRODUCTS);
+        const products =
+            await getProducts();
 
         if (!products.length) {
 
@@ -183,22 +208,26 @@ async function loadProducts() {
         }
 
         products
-.filter(product => product.ProductID)
-.forEach((product, index) => {
+            .filter(item => item.ProductID)
+            .forEach((item, index) => {
 
-            home.appendChild(createProductCard(product));
+                home.appendChild(
+                    createProductCard(item)
+                );
 
-            if (newest && index < 4) {
+                if (newest && index < 4) {
 
-                newest.appendChild(createProductCard(product));
+                    newest.appendChild(
+                        createProductCard(item)
+                    );
 
-            }
+                }
 
-        });
+            });
 
-    } catch (error) {
+    } catch (err) {
 
-        console.error(error);
+        console.error(err);
 
         home.innerHTML =
             "<div class='loading'>โหลดสินค้าไม่สำเร็จ</div>";
@@ -217,11 +246,13 @@ function createProductCard(item) {
 
     card.className = "product-card";
 
-    card.href = `product.html?id=${encodeURIComponent(item.ProductID)}`;
+    card.href =
+        `product.html?id=${encodeURIComponent(item.ProductID)}`;
 
     let statusClass = "status-open";
 
-    const status = (item.Status || "").toLowerCase();
+    const status =
+        String(item.Status || "").toLowerCase();
 
     if (status.includes("ปิด")) {
 
@@ -235,41 +266,46 @@ function createProductCard(item) {
 
     let image = "";
 
-if (item.Image) {
+    if (item.Image) {
 
-    image = String(item.Image).trim();
+        image = String(item.Image).trim();
 
-    image = image.replace("/view?usp=sharing", "");
+        if (image.includes("/file/d/")) {
 
-    if (image.includes("/file/d/")) {
+            const id =
+                image.split("/d/")[1].split("/")[0];
 
-        const id = image.split("/d/")[1].split("/")[0];
+            image =
+                `https://drive.google.com/thumbnail?id=${id}&sz=w1200`;
 
-        image = `https://drive.google.com/thumbnail?id=${id}&sz=w1200`;
+        }
+
+        else if (image.includes("uc?export=view&id=")) {
+
+            const id =
+                image.split("id=")[1];
+
+            image =
+                `https://drive.google.com/thumbnail?id=${id}&sz=w1200`;
+
+        }
 
     }
 
-} else {
+    if (!image) {
 
-    image = "https://placehold.co/600x600?text=KOOKV_KPOP";
+        image =
+            "https://placehold.co/600x600?text=KOOKV_KPOP";
 
-}
+    }
 
     card.innerHTML = `
 
         <img
-    src="${image}"
-    alt="${item.Product || ""}"
-    loading="lazy"
-    referrerpolicy="no-referrer"
-    onerror="
-        const id=(this.src.match(/id=([^&]+)/)||[])[1];
-        if(id){
-            this.src='https://drive.google.com/thumbnail?id='+id+'&sz=w1200';
-        }else{
-            this.src='https://placehold.co/600x600?text=No+Image';
-        }
-    ">
+            src="${image}"
+            alt="${item.Product || ""}"
+            loading="lazy"
+            onerror="this.src='https://placehold.co/600x600?text=No+Image'">
 
         <div class="product-info">
 
@@ -311,4 +347,4 @@ if (item.Image) {
 // Console
 // ==========================================
 
-console.log("KOOKV_KPOP Main.js V2 Loaded");
+console.log("KOOKV_KPOP Main.js V3 Loaded");
