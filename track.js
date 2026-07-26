@@ -133,13 +133,13 @@ const tracking =
 
     }
 
-    resultBox.innerHTML = "";
-
     result.forEach(order => {
 
-        resultBox.innerHTML += createOrderCard(order);
+    console.log(order);
 
-    });
+    resultBox.innerHTML += createOrderCard(order);
+
+});
 
 }
 
