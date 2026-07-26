@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         .getElementById("searchBtn")
         ?.addEventListener("click", searchOrder);
 
-    document
-        .getElementById("orderInput")
+   document
+    .getElementById("searchInput")
         ?.addEventListener("keypress", function (e) {
 
             if (e.key === "Enter") {
@@ -62,7 +62,7 @@ async function loadOrders() {
 function searchOrder() {
 
     const keyword = document
-        .getElementById("orderInput")
+        .getElementById("searchInput")
         .value
         .trim()
         .toUpperCase();
