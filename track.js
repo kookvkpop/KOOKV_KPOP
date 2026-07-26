@@ -1,6 +1,6 @@
-// =========================
-// KOOKV_KPOP Track Order
-// =========================
+// =======================================
+// KOOKV_KPOP Track Order V2
+// =======================================
 
 let orders = [];
 
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document
         .getElementById("orderInput")
-        ?.addEventListener("keypress", (e) => {
+        ?.addEventListener("keypress", function (e) {
 
             if (e.key === "Enter") {
 
@@ -26,16 +26,37 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 
-// โหลดข้อมูลออเดอร์จาก Google Sheets
+// =======================================
+// โหลดข้อมูล Orders
+// =======================================
+
 async function loadOrders() {
 
-    orders = await getSheet(CONFIG.SHEETS.ORDERS);
+    try {
 
-    console.log("Orders Loaded :", orders);
+        orders = await getSheet(CONFIG.SHEETS.ORDERS);
+
+        console.log("Orders :", orders);
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        orders = [];
+
+    }
 
 }
 
-// ค้นหาออเดอร์
+// =======================================
+// ค้นหา
+// OrderNo
+// Customer
+// Tracking
+// =======================================
+
 function searchOrder() {
 
     const keyword = document
@@ -50,92 +71,184 @@ function searchOrder() {
     if (!keyword) {
 
         resultBox.innerHTML = `
-            <div class="announcement-item">
-                กรุณากรอกเลขออเดอร์
-            </div>
+
+        <div class="announcement-item">
+
+            กรุณากรอกเลขออเดอร์
+            หรือชื่อลูกค้า
+            หรือเลขพัสดุ
+
+        </div>
+
         `;
 
         return;
 
     }
 
-    const order = orders.find(item =>
-        (item.OrderID || "")
-        .toUpperCase()
-        .trim() === keyword
-    );
+    const result = orders.filter(item => {
 
-    if (!order) {
+        const orderNo =
+            String(item.OrderNo || "")
+            .toUpperCase();
+
+        const customer =
+            String(item.Customer || "")
+            .toUpperCase();
+
+        const tracking =
+            String(item.Tracking || "")
+            .toUpperCase();
+
+        return (
+
+            orderNo.includes(keyword) ||
+
+            customer.includes(keyword) ||
+
+            tracking.includes(keyword)
+
+        );
+
+    });
+
+    if (result.length === 0) {
 
         resultBox.innerHTML = `
-            <div class="announcement-item">
-                ❌ ไม่พบเลขออเดอร์นี้
-            </div>
+
+        <div class="announcement-item">
+
+            ❌ ไม่พบข้อมูล
+
+        </div>
+
         `;
 
         return;
 
     }
 
-    showOrder(order);
+    resultBox.innerHTML = "";
+
+    result.forEach(order => {
+
+        resultBox.innerHTML += createOrderCard(order);
+
+    });
 
 }
-// =========================
-// แสดงผลออเดอร์
-// =========================
 
-function showOrder(order) {
+// =======================================
+// Card
+// =======================================
 
-    const resultBox =
-        document.getElementById("resultBox");
+function createOrderCard(order) {
 
     let statusClass = "status-open";
 
     const status =
-        (order.Status || "").toLowerCase();
-
-    if (status.includes("จัดส่ง")) {
-        statusClass = "status-open";
-    }
+        String(order.Status || "").toLowerCase();
 
     if (status.includes("ถึงไทย")) {
+
         statusClass = "status-coming";
+
     }
 
     if (status.includes("รอ")) {
+
         statusClass = "status-coming";
+
     }
 
     if (status.includes("ยกเลิก")) {
+
         statusClass = "status-close";
+
     }
 
-    resultBox.innerHTML = `
+    let image = "";
+
+    if (order.Image) {
+
+        image = String(order.Image);
+
+        if (image.includes("/file/d/")) {
+
+            const id =
+                image.split("/d/")[1].split("/")[0];
+
+            image =
+                `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+
+        }
+
+        else if (image.includes("uc?export=view&id=")) {
+
+            const id =
+                image.split("id=")[1];
+
+            image =
+                `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+
+        }
+
+    }
+
+    if (!image) {
+
+        image =
+            "https://placehold.co/500x500?text=KOOKV_KPOP";
+
+    }
+
+    return `
 
     <div class="product-card">
+
+        <img
+            src="${image}"
+            alt="${order.Product || ""}"
+            loading="lazy"
+            onerror="this.src='https://placehold.co/500x500?text=No+Image'">
 
         <div class="product-info">
 
             <h3 style="margin-bottom:20px;">
-                📦 รายละเอียดออเดอร์
+                📦 ${order.OrderNo || "-"}
             </h3>
 
             <p>
-                <strong>Order ID :</strong><br>
-                ${order.OrderID || "-"}
-            </p>
-
-            <br>
-
-            <p>
-                <strong>ชื่อลูกค้า :</strong><br>
+                <strong>👤 ลูกค้า</strong><br>
                 ${order.Customer || "-"}
             </p>
 
             <br>
 
             <p>
-                <strong>สถานะ :</strong><br>
+                <strong>🛍 สินค้า</strong><br>
+                ${order.Product || "-"}
+            </p>
+
+            <br>
+
+            <p>
+                <strong>📦 จำนวน</strong><br>
+                ${order.Qty || "-"} ชิ้น
+            </p>
+
+            <br>
+
+            <p>
+                <strong>🏷 LOT</strong><br>
+                ${order.LOT || "-"}
+            </p>
+
+            <br>
+
+            <p>
+
+                <strong>สถานะ</strong><br>
 
                 <span class="product-status ${statusClass}">
                     ${order.Status || "-"}
@@ -146,16 +259,47 @@ function showOrder(order) {
             <br>
 
             <p>
-                <strong>Tracking :</strong><br>
+                <strong>🚚 Tracking</strong><br>
                 ${order.Tracking || "-"}
             </p>
 
             <br>
 
             <p>
-                <strong>อัปเดตล่าสุด :</strong><br>
-                ${order.UpdateDate || "-"}
+                <strong>📅 อัปเดตล่าสุด</strong><br>
+                ${order.Update || "-"}
             </p>
+
+            <br>
+
+            <p>
+                <strong>📝 หมายเหตุ</strong><br>
+                ${order.Remark || "-"}
+            </p>
+
+            <hr style="margin:25px 0;border-color:#333;">
+
+            <h4 style="margin-bottom:15px;">
+                📍 ความคืบหน้า
+            </h4>
+
+            <div class="timeline">
+
+                <div>✅ รับออเดอร์แล้ว</div>
+
+                <div>✅ ชำระเงินแล้ว</div>
+
+                <div>✅ สั่งซื้อจากเกาหลี</div>
+
+                <div>✅ ส่งออกจากเกาหลี</div>
+
+                <div>
+                    <strong style="color:#b388ff;">
+                        📦 ${order.Status || "-"}
+                    </strong>
+                </div>
+
+            </div>
 
         </div>
 
@@ -165,4 +309,8 @@ function showOrder(order) {
 
 }
 
-console.log("Track Page Loaded");
+// =======================================
+// Ready
+// =======================================
+
+console.log("KOOKV_KPOP Track V2 Loaded");
