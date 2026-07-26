@@ -38,7 +38,6 @@ async function loadOrders() {
 
         console.log("Orders :", orders);
 
-alert(JSON.stringify(orders));
 
     }
 
