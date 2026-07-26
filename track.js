@@ -291,8 +291,8 @@ function createOrderCard(order) {
             <br>
 
             <p>
-                <strong>📅 อัปเดตล่าสุด</strong><br>
-                ${formatThaiDate(order.Update)}
+               <strong>📅 อัปเดตล่าสุด</strong><br>
+               ${order.Update || "-"}
             </p>
 
             <br>
