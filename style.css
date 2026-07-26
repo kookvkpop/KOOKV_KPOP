@@ -848,7 +848,7 @@ footer .container{
 
 
 /* =========================
-   TRACK PAGE
+   TRACK PAGE V2
 ========================= */
 
 .track-page{
@@ -857,50 +857,61 @@ footer .container{
 
 .track-page h1{
     text-align:center;
+    font-size:48px;
     margin-bottom:15px;
 }
 
 .track-desc{
     text-align:center;
     color:#bdbdbd;
-    margin-bottom:40px;
+    font-size:20px;
+    margin-bottom:35px;
 }
 
 .track-search{
-    max-width:700px;
-    margin:0 auto 40px;
+    max-width:850px;
+    margin:0 auto;
     display:flex;
-    gap:15px;
+    gap:18px;
+    align-items:center;
 }
 
 .track-search input{
     flex:1;
-    padding:18px 22px;
-    font-size:17px;
+    height:58px;
+    padding:0 22px;
+    font-size:18px;
     border:none;
-    border-radius:14px;
+    border-radius:16px;
     background:#1d1d24;
     color:#fff;
-    outline:none;
     border:1px solid #333;
 }
 
 .track-search input:focus{
+    outline:none;
     border-color:#8b5cf6;
 }
 
 .track-search button{
-    min-width:180px;
+    width:190px;
+    height:58px;
+    border-radius:16px;
 }
 
-@media(max-width:768px){
+#result{
+    max-width:850px;
+    margin:40px auto 0;
+}
 
-    .track-search{
-        flex-direction:column;
-    }
+@media (max-width:768px){
 
-    .track-search button{
-        width:100%;
-    }
+.track-search{
+    flex-direction:column;
+}
+
+.track-search button{
+    width:100%;
+}
 
 }
