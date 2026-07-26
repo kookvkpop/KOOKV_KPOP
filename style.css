@@ -738,3 +738,43 @@ footer .container{
     color:#bdbdbd;
     line-height:1.8;
 }
+
+.contact-note{
+    margin-top:60px;
+    background:#1e1f27;
+    border:1px solid #35374b;
+    border-radius:18px;
+    padding:35px;
+}
+
+.contact-note h2{
+    color:#d6a5ff;
+    margin-bottom:20px;
+}
+
+.contact-note ul{
+    padding-left:20px;
+    line-height:2;
+    color:#ddd;
+}
+
+.contact-thanks{
+    margin-top:60px;
+    text-align:center;
+    border-top:1px solid #333;
+    padding-top:45px;
+}
+
+.contact-thanks h2{
+    color:#d6a5ff;
+    margin-bottom:10px;
+}
+
+.contact-thanks h3{
+    margin-bottom:10px;
+}
+
+.contact-thanks p{
+    color:#bbb;
+    line-height:1.8;
+}
