@@ -299,7 +299,7 @@ function createOrderCard(order) {
 
                         <p>
                 <strong>📝 หมายเหตุ</strong><br>
-                ${formatThaiDate(order.Update)}
+                ${order.Remark || "ไม่มี"}
             </p>
 
         </div>
