@@ -38,7 +38,8 @@ async function loadOrders() {
 
         console.log("Orders :", orders);
 
-
+// โหลดข้อมูลสำเร็จ
+        
     }
 
     catch (err) {
