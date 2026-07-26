@@ -144,6 +144,26 @@ const tracking =
 }
 
 // =======================================
+// แปลงวันที่เป็นภาษาไทย
+// =======================================
+
+function formatThaiDate(dateString){
+
+    if(!dateString) return "-";
+
+    const date = new Date(dateString);
+
+    if(isNaN(date)) return dateString;
+
+    return date.toLocaleDateString("th-TH",{
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+    });
+
+}
+
+// =======================================
 // Card
 // =======================================
 
@@ -265,7 +285,7 @@ function createOrderCard(order) {
 
             <p>
                 <strong>🚚 Tracking</strong><br>
-                ${order.Tracking || "-"}
+                ${order.Tracking || "ยังไม่มีเลข Tracking"}
             </p>
 
             <br>
@@ -279,7 +299,7 @@ function createOrderCard(order) {
 
                         <p>
                 <strong>📝 หมายเหตุ</strong><br>
-                ${order.Remark || "-"}
+                ${formatThaiDate(order.Update)}
             </p>
 
         </div>
