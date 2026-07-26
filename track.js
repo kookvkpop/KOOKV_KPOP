@@ -68,7 +68,7 @@ function searchOrder() {
         .toUpperCase();
 
     const resultBox =
-        document.getElementById("resultBox");
+    document.getElementById("result");
 
     if (!keyword) {
 
@@ -277,12 +277,15 @@ function createOrderCard(order) {
 
             <br>
 
-            <p>
+                        <p>
                 <strong>📝 หมายเหตุ</strong><br>
                 ${order.Remark || "-"}
             </p>
 
-        
+        </div>
+
+    </div>
+
     `;
 
 }
