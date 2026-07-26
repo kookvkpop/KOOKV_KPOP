@@ -282,34 +282,7 @@ function createOrderCard(order) {
                 ${order.Remark || "-"}
             </p>
 
-            <hr style="margin:25px 0;border-color:#333;">
-
-            <h4 style="margin-bottom:15px;">
-                📍 ความคืบหน้า
-            </h4>
-
-            <div class="timeline">
-
-                <div>✅ รับออเดอร์แล้ว</div>
-
-                <div>✅ ชำระเงินแล้ว</div>
-
-                <div>✅ สั่งซื้อจากเกาหลี</div>
-
-                <div>✅ ส่งออกจากเกาหลี</div>
-
-                <div>
-                    <strong style="color:#b388ff;">
-                        📦 ${order.Status || "-"}
-                    </strong>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
+        
     `;
 
 }
