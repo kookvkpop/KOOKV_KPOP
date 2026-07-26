@@ -845,3 +845,62 @@ footer .container{
     border-top:1px solid #333;
     padding-top:45px;
 }
+
+
+/* =========================
+   TRACK PAGE
+========================= */
+
+.track-page{
+    padding:80px 0;
+}
+
+.track-page h1{
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.track-desc{
+    text-align:center;
+    color:#bdbdbd;
+    margin-bottom:40px;
+}
+
+.track-search{
+    max-width:700px;
+    margin:0 auto 40px;
+    display:flex;
+    gap:15px;
+}
+
+.track-search input{
+    flex:1;
+    padding:18px 22px;
+    font-size:17px;
+    border:none;
+    border-radius:14px;
+    background:#1d1d24;
+    color:#fff;
+    outline:none;
+    border:1px solid #333;
+}
+
+.track-search input:focus{
+    border-color:#8b5cf6;
+}
+
+.track-search button{
+    min-width:180px;
+}
+
+@media(max-width:768px){
+
+    .track-search{
+        flex-direction:column;
+    }
+
+    .track-search button{
+        width:100%;
+    }
+
+}
