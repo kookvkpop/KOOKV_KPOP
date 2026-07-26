@@ -50,42 +50,30 @@ KOOKV<span>_KPOP</span>
 
 <section class="track-page">
 
-<div class="container">
+    <div class="container">
 
-<div class="track-card">
+        <h1>📦 เช็คสถานะสินค้า</h1>
 
-<h1>📦 เช็คสถานะออเดอร์</h1>
+        <p class="track-desc">
+            ค้นหาด้วยเลขออเดอร์, ชื่อลูกค้า หรือเลข Tracking
+        </p>
 
-<p class="track-desc">
-ค้นหาด้วย <strong>เลขออเดอร์</strong>,
-<strong>ชื่อลูกค้า</strong>
-หรือ
-<strong>เลขพัสดุ</strong>
-</p>
+        <div class="track-search">
 
-<div class="track-search">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="🔍 พิมพ์เลขออเดอร์ / ชื่อลูกค้า / Tracking">
 
-<input
-type="text"
-id="orderInput"
-placeholder="เช่น KV001 หรือ Preem หรือ TH123456789">
+            <button id="searchBtn" class="btn">
+                🔍 ค้นหาสถานะ
+            </button>
 
-<button
-id="searchBtn"
-class="btn">
+        </div>
 
-ค้นหา
+        <div id="result"></div>
 
-</button>
-
-</div>
-
-</div>
-
-
-<div id="resultBox"></div>
-
-</div>
+    </div>
 
 </section>
 
