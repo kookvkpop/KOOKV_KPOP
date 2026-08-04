@@ -135,7 +135,7 @@ function renderProducts(products){
 
         container.innerHTML += `
 
-        <div class="product-card">
+        <a href="product.html?id=${item.ProductID}" class="product-card">
 
             <img
                 src="${item.Image || 'https://placehold.co/600x600?text=KOOKV_KPOP'}"
@@ -157,7 +157,7 @@ function renderProducts(products){
 
             </div>
 
-        </div>
+        </a>
 
         `;
 
